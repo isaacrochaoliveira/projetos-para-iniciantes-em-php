@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'Body';
+    src: url('../fonts/Cairo_Play/CairoPlay-VariableFont_slnt\,wght.ttf');
+}
+
+html, body {
+    font-family: 'Body';
+}
+
+h1 {
+    font-size: 80px;
+}
+
+h2 {
+    font-size: 60px;
+}
+
+h3 {
+    font-size: 40px;
+}
+
+#cabecalho {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../images/time-machine.jpg");
+    padding: 180px 100px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    color: white;
+}
+
+#cabecalho > div.box > h1 {
+    font-size: 55px;
+}
