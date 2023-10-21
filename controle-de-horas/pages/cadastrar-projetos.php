@@ -146,7 +146,7 @@ $date_time = $_POST['datetime'] ?? '';
             <?php
                 } else {
                     $date_time = explode('T', $date_time);
-                    $res = $pdo->query("UPDATE projetos SET date_in = :date_in, time_in = :time_in WHERE id_project = :id");
+                    $res = $pdo->prepare("UPDATE projetos SET date_in = :date_in, time_in = :time_in WHERE id_project = :id");
                     $res->bindValue(":date_in", $date_time[0]);
                     $res->bindValue(':time_in', $date_time[1]);
                     $res->bindValue(':id', $id_project, PDO::PARAM_INT);
