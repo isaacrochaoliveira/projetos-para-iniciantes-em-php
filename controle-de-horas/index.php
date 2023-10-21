@@ -16,7 +16,6 @@
             <ul class="nav nav-pills">
                 <li class="nav-item"><a href="index.php" class="nav-link active"><i class="fa-solid fa-house-user"></i> Home</a></li>
                 <li class="nav-item"><a href="index.php?pag=cadastrar-projetos" class="nav-link" aria-current="page"><i class="fa-solid fa-computer"></i> Cadastro de Projetos</a></li>
-                <li class="nav-item"><a href="index.php?pag=entrada-saidas-horas" class="nav-link"><i class="fa-solid fa-right-left"></i> Entradas/Saída de Horas</a></li>
                 <li class="nav-item"><a href="index.php?pag=relatorio" class="nav-link"><i class="fa-solid fa-file-excel"></i> Relatório de Horas Trabalhadas</a></li>
             </ul>
         </header>
@@ -32,6 +31,9 @@
         <?php
             if (@$_GET['pag'] == "cadastrar-projetos") {
                 include_once("pages/cadastrar-projetos.php");
+            }
+            if (@$_GET['pag'] == "entrada-saidas-horas") {
+                include_once("pages/entrada-saidas-horas.php");
             }
         ?>
     </section>
