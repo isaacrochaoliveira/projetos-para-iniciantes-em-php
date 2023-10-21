@@ -9,9 +9,9 @@ $descricao = $_POST['describe'] ?? "Your Project's Describe (Not Required)";
 
 ?>
 
-<div class="d-flex flex-wrap justify-content-between">
-    <div class="w-50">
-        <form action="<?= $_SERVER["PHP_SELF"] . "?" . $_SERVER['QUERY_STRING'] ?>" method="post">
+<div class="d-flex flex-wrap justify-content-around">
+    <div class="flex-2">
+        <form action="<?= $_SERVER["PHP_SELF"] . "?" . $_SERVER['QUERY_STRING'] ?>" method="post" class="mx-2">
             <div class="row my-3">
                 <div class="col">
                     <label for="nome_projeto">Nome do Projeto</label>
@@ -65,7 +65,7 @@ $descricao = $_POST['describe'] ?? "Your Project's Describe (Not Required)";
         }
         ?>
     </div>
-    <div class="w-50">
+    <div class="flex-1-30">
         <h3>Tabela de Projetos Cadastrados</h3>
         <hr>
         <?php
@@ -73,7 +73,7 @@ $descricao = $_POST['describe'] ?? "Your Project's Describe (Not Required)";
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
         if (count($res) > 0) {
         ?>
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>#</th>

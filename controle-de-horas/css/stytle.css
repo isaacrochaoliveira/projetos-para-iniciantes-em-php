@@ -37,3 +37,11 @@ h3 {
 .px-10 {
     padding: 0px 10rem;
 }
+
+.flex-2 {
+    flex: 2;
+}
+
+.flex-1-30 {
+    flex: 1 30px;
+}

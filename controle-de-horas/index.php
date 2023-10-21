@@ -28,7 +28,7 @@
             <p>Controle toda sua carga horária aqui</p>
         </div>
     </section>
-    <section class="px-10 py-5">
+    <section class="container">
         <?php
             if (@$_GET['pag'] == "cadastrar-projetos") {
                 include_once("pages/cadastrar-projetos.php");
