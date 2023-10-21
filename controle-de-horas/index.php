@@ -28,11 +28,13 @@
             <p>Controle toda sua carga horária aqui</p>
         </div>
     </section>
+    <section class="px-10 py-5">
+        <?php
+            if (@$_GET['pag'] == "cadastrar-projetos") {
+                include_once("pages/cadastrar-projetos.php");
+            }
+        ?>
+    </section>
 </body>
-    <?php 
-        if (@$_GET['pag'] == "cadastrar-projetos") {
-            include_once("pages/cadastrar-projetos.php");
-        }
-    ?>
 </html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

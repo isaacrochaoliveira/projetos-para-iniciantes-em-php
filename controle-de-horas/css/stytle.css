@@ -33,3 +33,7 @@ h3 {
 #cabecalho > div.box > h1 {
     font-size: 55px;
 }
+
+.px-10 {
+    padding: 0px 10rem;
+}
