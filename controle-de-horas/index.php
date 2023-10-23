@@ -32,8 +32,8 @@
             if (@$_GET['pag'] == "cadastrar-projetos") {
                 include_once("pages/cadastrar-projetos.php");
             }
-            if (@$_GET['pag'] == "entrada-saidas-horas") {
-                include_once("pages/entrada-saidas-horas.php");
+            if (@$_GET['pag'] == "relatorio") {
+                include_once("pages/relatorio.php");
             }
         ?>
     </section>
