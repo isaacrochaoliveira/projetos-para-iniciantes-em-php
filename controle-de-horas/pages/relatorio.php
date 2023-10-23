@@ -79,7 +79,7 @@ $exit = Date("Y-m") . "-$fim";
                                 if ($time_out_array[0] > $time_in_array[0]) {
                                     if (($time_out_array[0] >= "01") && ($time_out_array[0] <= "12")) {
                                         for ($c = 0; $c < $time_out_array[0]; $c++) {
-                                            echo $c;
+                                            $tempo_no_mes += $c;
                                         }
                                     } else {
                                         $tempo_no_mes += $time_out_array[0] - $time_in_array[0];
