@@ -86,21 +86,25 @@ $exit = Date("Y-m") . "-$fim";
                                     }
                                 } else {
                                     if (($time_out_array[0] >= "01") && ($time_out_array[0] < "12")) {
-                                        if (($time_in_array[0] >= "12") && ($time_in_array[0] < "00")) {
+                                        if (($time_in_array[0] >= "12") && ($time_in_array[0] < "23")) {
                                             $timezone_in = "PM";
                                         }
                                         $timezone_out = 'AM';
-                                        $newTime_out = ""
                                         $c = $time_in_array[0];
-                                        while ($c < $time_out_array[0]) {
-                                            $c++;
+                                        while ($timezone_in != "AM") {
                                             if ($c < "24") {
                                                 $timezone_in = "PM";
-                                                echo "$c";
+                                                $tempo_no_mes += 1;
                                             } else {
+                                                if ($timezone_out == "AM") {
+                                                    for ($z = 0; $z <= $time_out_array[0]; $z++) {
+                                                        $tempo_no_mes += 1;
+                                                    }
+                                                }
                                                 $timezone_in = "AM";
                                                 break;
                                             }
+                                            $c++;
                                         }
                                     } else {
                                         $tempo_no_mes += $time_out_array[0] - $time_in_array[0];
