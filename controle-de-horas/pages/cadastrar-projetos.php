@@ -9,6 +9,8 @@ $descricao = $_POST['describe'] ?? "Your Project's Describe (Not Required)";
 
 $date_time = $_POST['datetime'] ?? '';
 
+$action = $_GET['action'] ?? 'null';
+
 ?>
 
 <h2 class="py-4 fs-44">Cadastrar Projetos</h2>
@@ -97,9 +99,9 @@ $date_time = $_POST['datetime'] ?? '';
                             <td><?= $nome ?></td>
                             <td><?= $descricao ?></td>
                             <th>
-                                <a href="index.php?pag=cadastrar-projetos&id_project=<?= $id ?>#esh" title="Saídas de Horários"><i class="fa-solid fa-left-long text-danger"></i></a>
+                                <a href="index.php?pag=cadastrar-projetos&action=exit&id_project=<?= $id ?>#esh" title="Saídas de Horários"><i class="fa-solid fa-left-long text-danger"></i></a>
                                 &nbsp;
-                                <a href="index.php?pag=cadastrar-projetos&id_project=<?= $id ?>#esh" title="Entrada de Horários"><i class="fa-solid fa-right-long text-success"></i></a>
+                                <a href="index.php?pag=cadastrar-projetos&action=start&id_project=<?= $id ?>#esh" title="Entrada de Horários"><i class="fa-solid fa-right-long text-success"></i></a>
                             </th>
                         </tr>
                     <?php
@@ -118,55 +120,134 @@ $date_time = $_POST['datetime'] ?? '';
     <div>
         <?php
         $id_project = $_GET['id_project'] ?? 0;
-        $query = $pdo->query("SELECT * FROM projetos WHERE id_project = '$id_project'");
-        $res = $query->fetchAll(PDO::FETCH_ASSOC);
-        if (count($res) > 0) {
-        ?>
-            <div class="alert alert-warning" role="alert">
-                Cadastrando Horários de Entrada do Projeto: <?= $res[0]['nome'] ?>
-            </div>
-            <form action="<?= $_SERVER["PHP_SELF"] . "?" . $_SERVER['QUERY_STRING'] ?>#esh" method="post">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="datetime">Horário que começou a trabalhar no mesmo?</label>
-                        <input type="datetime-local" name="datetime" id="datetime" class="form-control">
-                    </div>
+        if ($action == 'start') {
+            $query = $pdo->query("SELECT * FROM projetos WHERE id_project = '$id_project'");
+            $res = $query->fetchAll(PDO::FETCH_ASSOC);
+            $exist = $res[0]['date_in'] ?? 'null';
+            if ((count($res) > 0) && ($exist == "null")) {
+            ?>
+                <div class="alert alert-success" role="alert">
+                    Cadastrando Horários de Entrada do Projeto: <?= $res[0]['nome'] ?>
                 </div>
-                <div class="row mt-4">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <form action="<?= $_SERVER["PHP_SELF"] . "?" . $_SERVER['QUERY_STRING'] ?>#esh" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="datetime">Horário que começou a trabalhar no mesmo?</label>
+                            <input type="datetime-local" name="datetime" id="datetime" class="form-control">
+                        </div>
                     </div>
-                </div>
-            </form>
-            <p>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        </div>
+                    </div>
+                </form>
+                <p>
+                    <?php
+                    if ($date_time == "") {
+                    ?>
+                <p>Entre com um horário!</p>
                 <?php
-                if ($date_time == "") {
-                ?>
-            <p>Entre com um horário!</p>
-            <?php
+                    } else {
+                        $date_time = explode('T', $date_time);
+                        $res = $pdo->prepare("UPDATE projetos SET date_in = :date_in, time_in = :time_in WHERE id_project = :id");
+                        $res->bindValue(":date_in", $date_time[0]);
+                        $res->bindValue(':time_in', $date_time[1]);
+                        $res->bindValue(':id', $id_project, PDO::PARAM_INT);
+                        if ($res->execute()) {
+                            ?>
+                                <div class="alert alert-success" role="alert">
+                                    Cadastramento de Hora feito com Sucesso!
+                                </div>
+                            <?php
+                        }
+                    }
+            ?>
+            </p>
+        <?php
+            } else {
+                if ($exist != "null") {
+                    ?>
+                     <div class="alert alert-dark" role="alert">
+                        Este projeto já tem um horário de entrada!
+                    </div>
+                    <?php
                 } else {
-                    $date_time = explode('T', $date_time);
-                    $res = $pdo->prepare("UPDATE projetos SET date_in = :date_in, time_in = :time_in WHERE id_project = :id");
-                    $res->bindValue(":date_in", $date_time[0]);
-                    $res->bindValue(':time_in', $date_time[1]);
-                    $res->bindValue(':id', $id_project, PDO::PARAM_INT);
-                    if ($res->execute()) {
-                        ?>
-                            <div class="alert alert-success" role="alert">
-                                Cadastramento de Hora feito com Sucesso!
+                    ?>
+                    <div class="alert alert-warning" role="alert">
+                        Nunhum projeto para dar entrada!
+                    </div>
+                    <?php
+                }
+            }
+        } else {
+            if ($action == 'null') {
+                ?>
+                    <div class="alert alert-info" role="alert">
+                        Nenhuma action para fazer no momento!
+                    </div>
+                <?php
+            } else {
+                $query = $pdo->query("SELECT * FROM projetos WHERE id_project = '$id_project'");
+                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                $exist = $res[0]['date_out'] ?? 'null';
+                if ((count($res) > 0) && ($exist == 'null')) {
+                    ?>
+                    <div class="alert alert-success" role="alert">
+                        Cadastrando Horários de Saída do Projeto: <?= $res[0]['nome'] ?>
+                    </div>
+                    <form action="<?= $_SERVER["PHP_SELF"] . "?" . $_SERVER['QUERY_STRING'] ?>#esh" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="datetime">Horário que terminou de Trabalhar no mesmo?</label>
+                                <input type="datetime-local" name="datetime" id="datetime" class="form-control">
                             </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            </div>
+                        </div>
+                    </form>
+                    <p>
+                        <?php
+                            if ($date_time == "") {
+                                ?>
+                                    <p>Entre com um horário!</p>
+                                <?php
+                            } else {
+                                $date_time = explode('T', $date_time);
+                                $res = $pdo->prepare("UPDATE projetos SET date_out = :date_out, time_out = :time_out WHERE id_project = :id");
+                                $res->bindValue(":date_out", $date_time[0]);
+                                $res->bindValue(':time_out', $date_time[1]);
+                                $res->bindValue(':id', $id_project, PDO::PARAM_INT);
+                                if ($res->execute()) {
+                                    ?>
+                                        <div class="alert alert-success" role="alert">
+                                            Cadastramento de Hora feito com Sucesso!
+                                        </div>
+                                    <?php
+                                }
+                            }
+                        ?>
+                </p>
+                    <?php
+                } else {
+                    if ($exist != "null") {
+                        ?>
+                         <div class="alert alert-dark" role="alert">
+                            Este projeto já tem um horário de saída!
+                        </div>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="alert alert-warning" role="alert">
+                            Nunhum projeto para dar saída!
+                        </div>
                         <?php
                     }
                 }
-        ?>
-        </p>
-    <?php
-        } else {
-        ?>
-        <div class="alert alert-warning" role="alert">
-            Nunhum projeto para dar entrada!
-        </div>
-        <?php
+            }
         }
     ?>
     </div>
