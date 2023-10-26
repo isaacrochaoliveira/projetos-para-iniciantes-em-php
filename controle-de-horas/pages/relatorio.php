@@ -67,18 +67,18 @@ $exit = Date("Y-m") . "-$fim";
                             $nome = $res[$i]['nome'];
                             $descricao = $res[$i]['descricao'];
                             $date_in = $res[$i]['date_in'] ?? '0000-00-00';
-                            $time_in = $res[$i]['time_in'] ?? '0000-00-00';
+                            $time_in = $res[$i]['time_in'] ?? '00:00:00';
                             $time_out = $res[$i]['time_out'] ?? '00:00:00';
-                            $date_out = $res[$i]['date_out'] ?? '00:00:00';
+                            $date_out = $res[$i]['date_out'] ?? '0000-00-00';
 
                             $date_in_array = explode('-', $date_in);
                             $time_in_array = explode(':', $time_in);
                             $time_out_array = explode(':', $time_out);
                             if ($date_in_array[2] >= '01') {
                                 if ($time_out_array[0] > $time_in_array[0]) {
-                                    if (($time_out_array[0] >= "01") && ($time_out_array[0] <= "12")) {
+                                    if (($time_out_array[0] >= "00") && ($time_out_array[0] < "12")) {
                                         $timezone_out = 'AM';
-										if (($time_in_array[0] >= 12) && ($time_in_array[0] < 00)) {
+										if (($time_in_array[0] >= "12") && ($time_in_array[0] <= "23")) {
 											$timezone_in = 'PM';
 										} else {
 											$timezone_in = 'AM';
@@ -88,7 +88,7 @@ $exit = Date("Y-m") . "-$fim";
 										}
                                     } else {
 										$timezone_out = "PM";
-										if (($time_in_array[0] >= 12) && ($time_in_array[0] < 00)) {
+										if (($time_in_array[0] >= "12") && ($time_in_array[0] < "23")) {
 											$timezone_in = 'PM';
 										} else {
 											$timezone_in = 'AM';
@@ -99,28 +99,28 @@ $exit = Date("Y-m") . "-$fim";
                                     }
                                 } else {
                                     if (($time_out_array[0] >= "01") && ($time_out_array[0] < "12")) {
-                                        if (($time_in_array[0] >= "12") && ($time_in_array[0] < "00")) {
+                                        if (($time_in_array[0] >= "12") && ($time_in_array[0] <= "23")) {
                                             $timezone_in = "PM";
                                         } else {
 											$timezone_in = 'AM';
 										}
                                         $timezone_out = 'AM';
                                         $c = $time_in_array[0];
-                                        while ($timezone_in != "AM") {
-                                            if ($c < "24") {
-                                                $timezone_in = "PM";
-                                                $tempo_no_mes += 1;
-                                            } else {
-                                                if ($timezone_out == "AM") {
-                                                    for ($z = 0; $z <= $time_out_array[0]; $z++) {
-                                                        $tempo_no_mes += 1;
-                                                    }
-                                                }
-                                                $timezone_in = "AM";
-                                                break;
-                                            }
-                                            $c++;
-                                        }
+										while ($timezone_in != "AM") {
+											if ($c < "24") {
+												$timezone_in = "PM";
+												$tempo_no_mes += 1;
+											} else {
+												if ($timezone_out == "AM") {
+													for ($z = 0; $z <= $time_out_array[0]; $z++) {
+														$tempo_no_mes += 1;
+													}
+												}
+												$timezone_in = "AM";
+												break;
+											}
+											$c++;
+										}
                                     } else {
                                         $tempo_no_mes += $time_out_array[0] - $time_in_array[0];
                                     }
