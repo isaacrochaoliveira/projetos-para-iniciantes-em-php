@@ -74,21 +74,36 @@ $exit = Date("Y-m") . "-$fim";
                             $date_in_array = explode('-', $date_in);
                             $time_in_array = explode(':', $time_in);
                             $time_out_array = explode(':', $time_out);
-
                             if ($date_in_array[2] >= '01') {
                                 if ($time_out_array[0] > $time_in_array[0]) {
                                     if (($time_out_array[0] >= "01") && ($time_out_array[0] <= "12")) {
-                                        for ($c = 0; $c < $time_out_array[0]; $c++) {
-                                            $tempo_no_mes += $c;
-                                        }
+                                        $timezone_out = 'AM';
+										if (($time_in_array[0] >= 12) && ($time_in_array[0] < 00)) {
+											$timezone_in = 'PM';
+										} else {
+											$timezone_in = 'AM';
+										}
+										for ($c = $time_in_array[0]; $c <= $time_out_array[0]; $c++) {
+											$tempo_no_mes += 1;
+										}
                                     } else {
-                                        $tempo_no_mes += $time_out_array[0] - $time_in_array[0];
+										$timezone_out = "PM";
+										if (($time_in_array[0] >= 12) && ($time_in_array[0] < 00)) {
+											$timezone_in = 'PM';
+										} else {
+											$timezone_in = 'AM';
+										}
+										for ($c = $time_in_array[0]; $c <= $time_out_array[0]; $c++) {
+											$tempo_no_mes += 1;
+										}
                                     }
                                 } else {
                                     if (($time_out_array[0] >= "01") && ($time_out_array[0] < "12")) {
-                                        if (($time_in_array[0] >= "12") && ($time_in_array[0] < "23")) {
+                                        if (($time_in_array[0] >= "12") && ($time_in_array[0] < "00")) {
                                             $timezone_in = "PM";
-                                        }
+                                        } else {
+											$timezone_in = 'AM';
+										}
                                         $timezone_out = 'AM';
                                         $c = $time_in_array[0];
                                         while ($timezone_in != "AM") {
