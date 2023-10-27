@@ -76,8 +76,6 @@ $exit = Date("Y-m") . "-$fim";
                             $time_in_array = explode(':', $time_in);
                             $time_out_array = explode(':', $time_out);
 							
-							$minutos += $time_in_array[1] + $time_out_array[1];
-							
                             if ($date_in_array[2] >= '01') {
                                 if ($time_out_array[0] > $time_in_array[0]) {
                                     if (($time_out_array[0] >= "00") && ($time_out_array[0] < "12")) {
@@ -131,16 +129,13 @@ $exit = Date("Y-m") . "-$fim";
                                     }
                                 }
                             }
-							
-							$minutos_mes = $tempo_no_mes * 60;
-							
                             ?>
                             <tr>
                                 <td><?= $id ?></td>
                                 <td><?= $nome ?></td>
                                 <td><?= $descricao ?></td>
-                                <th><?= implode('/', array_reverse(explode('-', $date_in))) . " - " . $time_in ?></th>
-                                <th><?= implode('/', array_reverse(explode('-', $date_out))) . " - " . $time_out ?></th>
+                                <th><?= implode('/', array_reverse(explode('-', $date_in))) . " - " . $time_in_array[0] . ":" . $time_in_array[1] ?></th>
+                                <th><?= implode('/', array_reverse(explode('-', $date_out))) . " - " . $time_out_array[0] . ":" . $time_out_array[1] ?></th>
                             </tr>
                         <?php
                         }
@@ -148,8 +143,15 @@ $exit = Date("Y-m") . "-$fim";
                 ?>
             </tbody>
             <tfoot>
-                <p>Horas Trabalhado no Mês: <?= $tempo_no_mes ?>hrs e <?= $minutos ?>min</p>
-				<p>Minutos Trabalhados no Mês: <?= $minutos_mes ?>min</p>
+				<div class="d-flex justify-content-around">
+					<?php
+						$minutos_mes = $tempo_no_mes * 60;
+					?>
+					<p>Horas Trabalhado no Mês: <?= $tempo_no_mes ?>hrs</p>
+					<p>Minutos Trabalhados no Mês: <?= $minutos_mes ?>min</p>
+					<p>Dias de Trabalho</p>
+				</div>
+				
             </tfoot>
         </table>
     </div>
