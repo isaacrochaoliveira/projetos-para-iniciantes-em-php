@@ -50,6 +50,7 @@ $exit = Date("Y-m") . "-$fim";
                     <th>#</th>
                     <th>Nome</th>
                     <th>Descrição</th>
+					<th>Carga Horária (H)</th>
                     <th>Começo</th>
                     <th>Término</th>
                 </tr>
@@ -60,6 +61,7 @@ $exit = Date("Y-m") . "-$fim";
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
                     $tempo_no_mes = 0;
 					$dias = 0;
+		  			$tempoCargaHoraria = 0;
                     if (count($res) > 0) {
                         for ($i = 0; $i < count($res); $i++) {
                             foreach ($res[$i] as $k => $v) {
@@ -78,76 +80,32 @@ $exit = Date("Y-m") . "-$fim";
                             $time_in_array = explode(':', $time_in);
                             $time_out_array = explode(':', $time_out);
 							
-							if ($date_in_array[2] > $date_out_array[2]) {
-								$dias += $date_in_array[2] - $date_out_array[2];
-								$dias_linha = $date_in_array[2] - $date_out_array[2];
-							} else {
-								$dias += $date_out_array[2] - $date_in_array[2];
-								$dias_linha = $date_out_array[2] - $date_in_array[2];
+							if ($date_in_array[2] > '00') {
+								if ($date_in_array[2] > $date_out_array[2]) {
+									$dias += ($date_in_array[2] - $date_out_array[2]);
+									$dias_linha = $dat(e_in_array[2] - $date_out_array[2]) + 1;
+								} else {
+									if ($date_in_array[2] == $date_out_array[2]) {
+										$dias += 1;
+										$dias_linha = 1;
+									} else {
+										$dias += ($date_out_array[2] - $date_in_array[2]);
+										$dias_linha = ($date_out_array[2] - $date_in_array[2]) + 1;
+									}
+								}
 							}
 							if ($dias_linha > 0) {
-								$tempo_no_mes += $cargaHoraria * $dias_linha;
+								$tempoCargaHoraria += $cargaHoraria * ($dias_linha);
+								$tempo_no_mes = $tempoCargaHoraria;
 							}
-                            if ($date_in_array[2] >= '01') {
-                                if ($time_out_array[0] > $time_in_array[0]) {
-                                    if (($time_out_array[0] >= "00") && ($time_out_array[0] < "12")) {
-                                        $timezone_out = 'AM';
-										if (($time_in_array[0] >= "12") && ($time_in_array[0] <= "23")) {
-											$timezone_in = 'PM';
-										} else {
-											$timezone_in = 'AM';
-										}
-										for ($c = $time_in_array[0]; $c < $time_out_array[0]; $c++) {
-											$tempo_no_mes += 1;
-										}
-                                    } else {
-										$timezone_out = "PM";
-										if (($time_in_array[0] >= "12") && ($time_in_array[0] < "23")) {
-											$timezone_in = 'PM';
-										} else {
-											$timezone_in = 'AM';
-										}
-										for ($c = $time_in_array[0]; $c < $time_out_array[0]; $c++) {
-											$tempo_no_mes += 1;
-										}
-                                    }
-                                } else {
-                                    if (($time_out_array[0] >= "01") && ($time_out_array[0] < "12")) {
-                                        if (($time_in_array[0] >= "12") && ($time_in_array[0] <= "23")) {
-											$timezone_in = "PM";
-                                        } else {
-											echo $time_in_array[0];
-											$timezone_in = 'AM';
-										}
-                                        $timezone_out = 'AM';
-                                        $c = $time_in_array[0];
-										while ($timezone_in != "AM") {
-											if ($c < "24") {
-												$timezone_in = "PM";
-												$tempo_no_mes += 1;
-											} else {
-												if ($timezone_out == "AM") {
-													for ($z = 0; $z <= $time_out_array[0]; $z++) {
-														$tempo_no_mes += 1;
-													}
-												}
-												$timezone_in = "AM";
-												break;
-											}
-											$c++;
-										}
-                                    } else {
-                                        $tempo_no_mes += $time_out_array[0] - $time_in_array[0];
-                                    }
-                                }
-                            }
                             ?>
                             <tr>
                                 <td><?= $id ?></td>
                                 <td><?= $nome ?></td>
                                 <td><?= $descricao ?></td>
-                                <th><?= implode('/', array_reverse(explode('-', $date_in))) . " - " . $time_in_array[0] . ":" . $time_in_array[1] ?></th>
-                                <th><?= implode('/', array_reverse(explode('-', $date_out))) . " - " . $time_out_array[0] . ":" . $time_out_array[1] ?></th>
+								<td><?= $cargaHoraria ?></td>
+                                <th><?= implode('/', array_reverse(explode('-', $date_in))) ?></th>
+                                <th><?= implode('/', array_reverse(explode('-', $date_out))) ?></th>
                             </tr>
                         <?php
                         }
@@ -155,9 +113,10 @@ $exit = Date("Y-m") . "-$fim";
                 ?>
             </tbody>
             <tfoot>
-				<div class="d-flex justify-content-around">
+				<div class="d-flex flex-wrap justify-content-around">
 					<?php
 						$minutos_mes = $tempo_no_mes * 60;
+						$dias += 1;
 					?>
 					<p>Horas Trabalhado no Mês: <?= $tempo_no_mes ?>hrs</p>
 					<p>Minutos Trabalhados no Mês: <?= $minutos_mes ?>min</p>
