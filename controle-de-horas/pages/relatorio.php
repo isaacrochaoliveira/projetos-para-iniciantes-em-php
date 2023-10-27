@@ -83,7 +83,7 @@ $exit = Date("Y-m") . "-$fim";
 										} else {
 											$timezone_in = 'AM';
 										}
-										for ($c = $time_in_array[0]; $c <= $time_out_array[0]; $c++) {
+										for ($c = $time_in_array[0]; $c < $time_out_array[0]; $c++) {
 											$tempo_no_mes += 1;
 										}
                                     } else {
@@ -93,15 +93,16 @@ $exit = Date("Y-m") . "-$fim";
 										} else {
 											$timezone_in = 'AM';
 										}
-										for ($c = $time_in_array[0]; $c <= $time_out_array[0]; $c++) {
+										for ($c = $time_in_array[0]; $c < $time_out_array[0]; $c++) {
 											$tempo_no_mes += 1;
 										}
                                     }
                                 } else {
                                     if (($time_out_array[0] >= "01") && ($time_out_array[0] < "12")) {
                                         if (($time_in_array[0] >= "12") && ($time_in_array[0] <= "23")) {
-                                            $timezone_in = "PM";
+											$timezone_in = "PM";
                                         } else {
+											echo $time_in_array[0];
 											$timezone_in = 'AM';
 										}
                                         $timezone_out = 'AM';
@@ -140,7 +141,7 @@ $exit = Date("Y-m") . "-$fim";
                 ?>
             </tbody>
             <tfoot>
-                <p>Tempo Trabalhado no Mês: <?= $tempo_no_mes ?>hrs</p>
+                <p>Tempo Trabalhado no Mês: <?= $tempo_no_mes ?>hrs e 0min</p>
             </tfoot>
         </table>
     </div>
