@@ -59,6 +59,7 @@ $exit = Date("Y-m") . "-$fim";
                     $query = $pdo->query("SELECT * FROM projetos;");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
                     $tempo_no_mes = 0;
+					$minutos = 0;
                     if (count($res) > 0) {
                         for ($i = 0; $i < count($res); $i++) {
                             foreach ($res[$i] as $k => $v) {
@@ -74,6 +75,9 @@ $exit = Date("Y-m") . "-$fim";
                             $date_in_array = explode('-', $date_in);
                             $time_in_array = explode(':', $time_in);
                             $time_out_array = explode(':', $time_out);
+							
+							$minutos += $time_in_array[1] + $time_out_array[1];
+							
                             if ($date_in_array[2] >= '01') {
                                 if ($time_out_array[0] > $time_in_array[0]) {
                                     if (($time_out_array[0] >= "00") && ($time_out_array[0] < "12")) {
@@ -127,6 +131,9 @@ $exit = Date("Y-m") . "-$fim";
                                     }
                                 }
                             }
+							
+							$minutos_mes = $tempo_no_mes * 60;
+							
                             ?>
                             <tr>
                                 <td><?= $id ?></td>
@@ -141,7 +148,8 @@ $exit = Date("Y-m") . "-$fim";
                 ?>
             </tbody>
             <tfoot>
-                <p>Tempo Trabalhado no Mês: <?= $tempo_no_mes ?>hrs e 0min</p>
+                <p>Horas Trabalhado no Mês: <?= $tempo_no_mes ?>hrs e <?= $minutos ?>min</p>
+				<p>Minutos Trabalhados no Mês: <?= $minutos_mes ?>min</p>
             </tfoot>
         </table>
     </div>
