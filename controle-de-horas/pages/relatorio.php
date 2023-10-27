@@ -59,7 +59,7 @@ $exit = Date("Y-m") . "-$fim";
                     $query = $pdo->query("SELECT * FROM projetos;");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
                     $tempo_no_mes = 0;
-					$minutos = 0;
+					$dias = 0;
                     if (count($res) > 0) {
                         for ($i = 0; $i < count($res); $i++) {
                             foreach ($res[$i] as $k => $v) {
@@ -67,15 +67,27 @@ $exit = Date("Y-m") . "-$fim";
                             $id = $res[$i]['id_project'];
                             $nome = $res[$i]['nome'];
                             $descricao = $res[$i]['descricao'];
+							$cargaHoraria = $res[$i]['carga_horaria'];
                             $date_in = $res[$i]['date_in'] ?? '0000-00-00';
                             $time_in = $res[$i]['time_in'] ?? '00:00:00';
                             $time_out = $res[$i]['time_out'] ?? '00:00:00';
                             $date_out = $res[$i]['date_out'] ?? '0000-00-00';
 
                             $date_in_array = explode('-', $date_in);
+							$date_out_array = explode('-', $date_out);
                             $time_in_array = explode(':', $time_in);
                             $time_out_array = explode(':', $time_out);
 							
+							if ($date_in_array[2] > $date_out_array[2]) {
+								$dias += $date_in_array[2] - $date_out_array[2];
+								$dias_linha = $date_in_array[2] - $date_out_array[2];
+							} else {
+								$dias += $date_out_array[2] - $date_in_array[2];
+								$dias_linha = $date_out_array[2] - $date_in_array[2];
+							}
+							if ($dias_linha > 0) {
+								$tempo_no_mes += $cargaHoraria * $dias_linha;
+							}
                             if ($date_in_array[2] >= '01') {
                                 if ($time_out_array[0] > $time_in_array[0]) {
                                     if (($time_out_array[0] >= "00") && ($time_out_array[0] < "12")) {
@@ -149,7 +161,7 @@ $exit = Date("Y-m") . "-$fim";
 					?>
 					<p>Horas Trabalhado no Mês: <?= $tempo_no_mes ?>hrs</p>
 					<p>Minutos Trabalhados no Mês: <?= $minutos_mes ?>min</p>
-					<p>Dias de Trabalho</p>
+					<p>Dias de Trabalho: <?= $dias ?> Dias</p>
 				</div>
 				
             </tfoot>
