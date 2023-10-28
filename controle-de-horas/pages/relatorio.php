@@ -141,6 +141,11 @@ $exit = Date("Y-m") . "-$fim";
 											if (($date_in_array[2] < $date_out_array[2]) && ($date_out_array[1] - $date_in_array[1] > 1)) {
 												for ($mes_contando = $date_in_array[1]; $mes_contando <= $date_out_array[1]; $mes_contando++) {
 													$month = $mes_contando;
+													if (!($month == $date_in_array[1])) {
+														if (!($month == $date_out_array[1])) {
+															$month = $mes_contando;
+														}
+													}
 													if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
 														$dias_mes = "31";
 													} else {
@@ -157,7 +162,7 @@ $exit = Date("Y-m") . "-$fim";
 													for ($z = $date_in_array[2]; $z <= $dias_mes; $z++) {
 														$dias_linha += 1;
 														$dias += 1;
-														echo $z."<br>";
+														echo $month."<br>";
 													}	
 												}
 											}
