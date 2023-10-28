@@ -1,48 +1,8 @@
 <?php 
 
 include_once('./db/conexao.php');
-
-$start = Date("Y-m") . "-01";
-$month = Date("m");
-	if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
-		$fim = "31";
-	} else {
-		if ($month == "02") {
-			if (Date('Y') % 4 == 0) {
-				$fim = "29";
-			} else {
-				$fim = "28";
-			}
-		} else {
-			$fim = "30";
-		}
-	}
-$exit = Date("Y-m") . "-$fim";
-
 ?>
-
 <div class="py-5">
-    <form action="<?= $_SERVER["PHP_SELF"] . "?" . $_SERVER['QUERY_STRING'] ?>" method="post">
-        <div class="row">
-            <div class="col-md-3">
-                <label for="start">Data de Início:</label>
-                <input type="date" name="start" id="start" class="form-control" value="<?= $start ?>">
-            </div>
-            <div class="col-md-3">
-                <label for="exit">Data da Término</label>
-                <input type="date" name="exit" id="exit" class="form-control" value="<?= $exit ?>">
-            </div>
-            <div class="col-md-3">
-                <label for="select">Selecione</label>
-                <select name="select" id="select" class="form-select">
-                    <option value="todos">Todos</option>
-                    <option value="terminados">Trabalhos Terminados</option>
-                    <option value="começados">Trabalhos Começados</option>
-                </select>
-            </div>
-        </div>
-    </form>
-    <hr>
     <div>
         <table class="table table-striped">
             <thead>
@@ -143,8 +103,12 @@ $exit = Date("Y-m") . "-$fim";
 													$month = $mes_contando;
 													if (!($month == $date_in_array[1])) {
 														if (!($month == $date_out_array[1])) {
-															$month = $mes_contando;
+															$mudanca_de_mes = 1;
+														} else {
+															$mudanca_de_mes = 1;
 														}
+													} else {
+															$mudanca_de_mes = $date_in_array[2];
 													}
 													if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
 														$dias_mes = "31";
@@ -159,10 +123,9 @@ $exit = Date("Y-m") . "-$fim";
 															$dias_mes = "30";
 														}
 													}
-													for ($z = $date_in_array[2]; $z <= $dias_mes; $z++) {
+													for ($z = $mudanca_de_mes; $z <= $dias_mes; $z++) {
 														$dias_linha += 1;
 														$dias += 1;
-														echo $month."<br>";
 													}	
 												}
 											}
