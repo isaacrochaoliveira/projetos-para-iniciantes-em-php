@@ -146,6 +146,9 @@ include_once('./db/conexao.php');
                                 <td><?= implode('/', array_reverse(explode('-', $date_in))) ?></td>
                                 <td><?= implode('/', array_reverse(explode('-', $date_out))) ?></td>
 								<td><?= $dias_linha ?></td>
+								<td>
+									<a href="index.php?pag=relatorio&id_trash=<?= $id ?>"><i class="fa-regular fa-trash-can text-danger"></i></a>
+								</td>
                             </tr>
                         <?php
                         }
@@ -168,3 +171,9 @@ include_once('./db/conexao.php');
         </table>
     </div>
 </div>
+<?php
+	$id = trim($_GET['id_trash']) ?? 0;
+	if ($id != 0) {
+		$pdo->query("DELETE FROM projetos WHERE id_project = '$id'");
+	}
+?>
