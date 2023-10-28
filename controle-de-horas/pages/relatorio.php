@@ -82,13 +82,15 @@ $exit = Date("Y-m") . "-$fim";
                             $time_out_array = explode(':', $time_out);
 							
 							if ($date_in_array[2] > '00') {
-								if ($date_in_array[2] == $date_out_array[2]) {
-									$dias += 1;
-									$dias_linha = 1;
-								} else {
-									for ($c = $date_in_array[2]; $c <= $date_out_array[2]; $c++) {
-										$dias_linha += 1;
-										$dias += 1;	
+								if ($date_in_array[1] == $date_out_array[1]) {
+									if ($date_in_array[2] == $date_out_array[2]) {
+										$dias += 1;
+										$dias_linha = 1;
+									} else {
+										for ($c = $date_in_array[2]; $c <= $date_out_array[2]; $c++) {
+											$dias_linha += 1;
+											$dias += 1;	
+										}
 									}
 								}
 							}

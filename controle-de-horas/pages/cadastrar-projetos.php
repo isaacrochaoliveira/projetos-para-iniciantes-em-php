@@ -6,7 +6,7 @@ $pag = "cadastrar-projetos";
 
 $nome_projeto = $_POST['nome_projeto'] ?? "Your Project's Name (Required)";
 $descricao = $_POST['describe'] ?? "Your Project's Describe (Not Required)";
-
+$cargaHoraria = $_POST['carga'] ?? 8;
 $date_time = $_POST['datetime'] ?? '';
 
 $action = $_GET['action'] ?? 'null';
@@ -29,6 +29,12 @@ $action = $_GET['action'] ?? 'null';
                     <textarea name="describe" id="descrobe" cols="10" rows="5" class="form-control"><?= $descricao ?></textarea>
                 </div>
             </div>
+			<div class="row">
+                <div class="col">
+                    <label for="carga">Carga Horária</label>
+					<input type="number" name="carga" id="carga" min="1" max="18" class="form-control" value="<?= $cargaHoraria ?>">
+                </div>
+            </div>
             <div class="my-3">
                 <button type="submit" class="btn btn-success w-100">Cadastrar</button>
             </div>
@@ -46,12 +52,13 @@ $action = $_GET['action'] ?? 'null';
                 <?php
             } else {
                 if ($descricao == "Your Project's Describe (Not Required)") {
-                    $res = $pdo->prepare("INSERT INTO projetos SET nome = :nome_projeto");
+                    $res = $pdo->prepare("INSERT INTO projetos SET nome = :nome_projeto, carga_horaria = :carga_horaria");
                     $res->bindValue(':nome_projeto', $nome_projeto, PDO::PARAM_STR);
                 } else {
-                    $res = $pdo->prepare("INSERT INTO projetos SET nome = :nome_projeto, descricao = :descricao");
+                    $res = $pdo->prepare("INSERT INTO projetos SET nome = :nome_projeto, descricao = :descricao, carga_horaria = :carga_horaria");
                     $res->bindValue(':nome_projeto', $nome_projeto, PDO::PARAM_STR);
                     $res->bindValue(':descricao', $descricao, PDO::PARAM_STR);
+					$res->bindValue(':carga_horaria', $cargaHoraria, PDO::PARAM_STR);
                 }
                 if ($res->execute()) {
                 ?>
@@ -133,7 +140,7 @@ $action = $_GET['action'] ?? 'null';
                     <div class="row">
                         <div class="col-md-6">
                             <label for="datetime">Horário que começou a trabalhar no mesmo?</label>
-                            <input type="datetime-local" name="datetime" id="datetime" class="form-control">
+                            <input type="date" name="datetime" id="datetime" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -146,13 +153,11 @@ $action = $_GET['action'] ?? 'null';
                     <?php
                     if ($date_time == "") {
                     ?>
-                <p>Entre com um horário!</p>
-                <?php
+                		<p>Entre com um horário!</p>
+					<?php
                     } else {
-                        $date_time = explode('T', $date_time);
-                        $res = $pdo->prepare("UPDATE projetos SET date_in = :date_in, time_in = :time_in WHERE id_project = :id");
-                        $res->bindValue(":date_in", $date_time[0]);
-                        $res->bindValue(':time_in', $date_time[1]);
+                        $res = $pdo->prepare("UPDATE projetos SET date_in = :date_in WHERE id_project = :id");
+                        $res->bindValue(":date_in", $date_time);
                         $res->bindValue(':id', $id_project, PDO::PARAM_INT);
                         if ($res->execute()) {
                             ?>
@@ -162,7 +167,7 @@ $action = $_GET['action'] ?? 'null';
                             <?php
                         }
                     }
-            ?>
+            	?>
             </p>
         <?php
             } else {
@@ -200,7 +205,7 @@ $action = $_GET['action'] ?? 'null';
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="datetime">Horário que terminou de Trabalhar no mesmo?</label>
-                                <input type="datetime-local" name="datetime" id="datetime" class="form-control">
+                                <input type="date" name="datetime" id="datetime" class="form-control">
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -216,10 +221,8 @@ $action = $_GET['action'] ?? 'null';
                                     <p>Entre com um horário!</p>
                                 <?php
                             } else {
-                                $date_time = explode('T', $date_time);
-                                $res = $pdo->prepare("UPDATE projetos SET date_out = :date_out, time_out = :time_out WHERE id_project = :id");
-                                $res->bindValue(":date_out", $date_time[0]);
-                                $res->bindValue(':time_out', $date_time[1]);
+                                $res = $pdo->prepare("UPDATE projetos SET date_out = :date_out WHERE id_project = :id");
+                                $res->bindValue(":date_out", $date_time);
                                 $res->bindValue(':id', $id_project, PDO::PARAM_INT);
                                 if ($res->execute()) {
                                     ?>
