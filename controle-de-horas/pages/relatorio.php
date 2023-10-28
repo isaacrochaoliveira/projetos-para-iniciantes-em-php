@@ -60,6 +60,7 @@ $exit = Date("Y-m") . "-$fim";
                     $query = $pdo->query("SELECT * FROM projetos;");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
                     $tempo_no_mes = 0;
+		  			$dias_linha = 0;
 					$dias = 0;
 		  			$tempoCargaHoraria = 0;
                     if (count($res) > 0) {
@@ -81,16 +82,13 @@ $exit = Date("Y-m") . "-$fim";
                             $time_out_array = explode(':', $time_out);
 							
 							if ($date_in_array[2] > '00') {
-								if ($date_in_array[2] > $date_out_array[2]) {
-									$dias += ($date_in_array[2] - $date_out_array[2]);
-									$dias_linha = $dat(e_in_array[2] - $date_out_array[2]) + 1;
+								if ($date_in_array[2] == $date_out_array[2]) {
+									$dias += 1;
+									$dias_linha = 1;
 								} else {
-									if ($date_in_array[2] == $date_out_array[2]) {
-										$dias += 1;
-										$dias_linha = 1;
-									} else {
-										$dias += ($date_out_array[2] - $date_in_array[2]);
-										$dias_linha = ($date_out_array[2] - $date_in_array[2]) + 1;
+									for ($c = $date_in_array[2]; $c <= $date_out_array[2]; $c++) {
+										$dias_linha += 1;
+										$dias += 1;	
 									}
 								}
 							}
@@ -98,7 +96,6 @@ $exit = Date("Y-m") . "-$fim";
 								$tempoCargaHoraria += $cargaHoraria * ($dias_linha);
 								$tempo_no_mes = $tempoCargaHoraria;
 							}
-							echo $date_out_array[2] - $date_in_array[2] + 1;
                             ?>
                             <tr>
                                 <td><?= $id ?></td>
@@ -117,7 +114,6 @@ $exit = Date("Y-m") . "-$fim";
 				<div class="d-flex flex-wrap justify-content-around">
 					<?php
 						$minutos_mes = $tempo_no_mes * 60;
-						$dias += 1;
 					?>
 					<p>Horas Trabalhado no Mês: <?= $tempo_no_mes ?>hrs</p>
 					<p>Minutos Trabalhados no Mês: <?= $minutos_mes ?>min</p>
