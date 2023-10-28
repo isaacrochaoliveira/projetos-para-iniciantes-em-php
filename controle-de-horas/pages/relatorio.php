@@ -69,7 +69,7 @@ $exit = Date("Y-m") . "-$fim";
                             $id = $res[$i]['id_project'];
                             $nome = $res[$i]['nome'];
                             $descricao = $res[$i]['descricao'];
-							$cargaHoraria = $res[$i]['carga_horaria'];
+							$cargaHoraria = $res[$i]['carga_horaria'] ?? 0;
                             $date_in = $res[$i]['date_in'] ?? '0000-00-00';
                             $time_in = $res[$i]['time_in'] ?? '00:00:00';
                             $time_out = $res[$i]['time_out'] ?? '00:00:00';
@@ -98,6 +98,7 @@ $exit = Date("Y-m") . "-$fim";
 								$tempoCargaHoraria += $cargaHoraria * ($dias_linha);
 								$tempo_no_mes = $tempoCargaHoraria;
 							}
+							echo $date_out_array[2] - $date_in_array[2] + 1;
                             ?>
                             <tr>
                                 <td><?= $id ?></td>
