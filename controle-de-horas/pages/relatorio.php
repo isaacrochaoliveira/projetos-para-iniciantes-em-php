@@ -110,7 +110,31 @@ $exit = Date("Y-m") . "-$fim";
 												}
 											}
 											for ($z = $date_in_array[2]; $z <= $dias_mes; $z++) {
-												echo $z . "<br>";
+												$dias_linha += 1;
+												$dias += 1;
+											}
+											$month = $date_out_array[1];
+											if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
+												$dias_mes = "31";
+											} else {
+												if ($month == "02") {
+													if (Date('Y') % 4 == 0) {
+														$dias_mes = "29";
+													} else {
+														$dias_mes = "28";
+													}
+												} else {
+													$dias_mes = "30";
+												}
+											}
+											if ($date_out_array[2] > 1) {
+												$mes_contato = 1;
+											} else {
+												$mes_contato = $date_out_array[2];
+											}
+											for ($z = $mes_contato; $z <= $dias_mes; $z++) {
+												$dias_linha += 1;
+												$dias += 1;
 											}
 										}
 									}
