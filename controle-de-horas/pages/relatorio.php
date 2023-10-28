@@ -53,6 +53,7 @@ $exit = Date("Y-m") . "-$fim";
 					<th>Carga Horária (H)</th>
                     <th>Começo</th>
                     <th>Término</th>
+					<th>Dias</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,7 +95,7 @@ $exit = Date("Y-m") . "-$fim";
 									}
 								} else {
 									if ($date_out_array[1] > $date_in_array[1]) {
-										if ($date_in_array[2] < $date_out_array[2]) {
+										if (($date_in_array[2] < $date_out_array[2]) && ($date_out_array[1] - $date_in_array[1] == 1)) {
 											$month = $date_in_array[1];
 											if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
 												$dias_mes = "31";
@@ -136,6 +137,30 @@ $exit = Date("Y-m") . "-$fim";
 												$dias_linha += 1;
 												$dias += 1;
 											}
+										} else {
+											if (($date_in_array[2] < $date_out_array[2]) && ($date_out_array[1] - $date_in_array[1] > 1)) {
+												for ($mes_contando = $date_in_array[1]; $mes_contando <= $date_out_array[1]; $mes_contando++) {
+													$month = $mes_contando;
+													if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
+														$dias_mes = "31";
+													} else {
+														if ($month == "02") {
+															if (Date('Y') % 4 == 0) {
+																$dias_mes = "29";
+															} else {
+																$dias_mes = "28";
+															}
+														} else {
+															$dias_mes = "30";
+														}
+													}
+													for ($z = $date_in_array[2]; $z <= $dias_mes; $z++) {
+														$dias_linha += 1;
+														$dias += 1;
+														echo $z."<br>";
+													}	
+												}
+											}
 										}
 									}
 								}
@@ -150,8 +175,9 @@ $exit = Date("Y-m") . "-$fim";
                                 <td><?= $nome ?></td>
                                 <td><?= $descricao ?></td>
 								<td><?= $cargaHoraria ?></td>
-                                <th><?= implode('/', array_reverse(explode('-', $date_in))) ?></th>
-                                <th><?= implode('/', array_reverse(explode('-', $date_out))) ?></th>
+                                <td><?= implode('/', array_reverse(explode('-', $date_in))) ?></td>
+                                <td><?= implode('/', array_reverse(explode('-', $date_out))) ?></td>
+								<td><?= $dias_linha ?></td>
                             </tr>
                         <?php
                         }
@@ -164,10 +190,10 @@ $exit = Date("Y-m") . "-$fim";
 						$minutos_mes = $tempo_no_mes * 60;
 						$segundos_mes = $tempo_no_mes * 3600;
 					?>
-					<p>Horas (M): <?= $tempo_no_mes ?>hrs</p>
-					<p>Minutos (M): <?= number_format($minutos_mes, 2, ',', '.') ?>min</p>
-					<p>Segundos (M): <?= number_format($segundos_mes, 2, ',', '.') ?></p>
 					<p>Dias de Trabalho: <?= $dias ?></p>
+					<p>Horas: <?= $tempo_no_mes ?>hrs</p>
+					<p>Minutos: <?= number_format($minutos_mes, 2, ',', '.') ?>min</p>
+					<p>Segundos: <?= number_format($segundos_mes, 2, ',', '.') ?></p>
 				</div>
 				
             </tfoot>

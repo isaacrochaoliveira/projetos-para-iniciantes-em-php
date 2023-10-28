@@ -54,6 +54,7 @@ $action = $_GET['action'] ?? 'null';
                 if ($descricao == "Your Project's Describe (Not Required)") {
                     $res = $pdo->prepare("INSERT INTO projetos SET nome = :nome_projeto, carga_horaria = :carga_horaria");
                     $res->bindValue(':nome_projeto', $nome_projeto, PDO::PARAM_STR);
+					$res->bindValue(':carga_horaria', $cargaHoraria, PDO::PARAM_STR);
                 } else {
                     $res = $pdo->prepare("INSERT INTO projetos SET nome = :nome_projeto, descricao = :descricao, carga_horaria = :carga_horaria");
                     $res->bindValue(':nome_projeto', $nome_projeto, PDO::PARAM_STR);
