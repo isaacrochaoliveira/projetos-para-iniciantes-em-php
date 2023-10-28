@@ -60,13 +60,13 @@ $exit = Date("Y-m") . "-$fim";
                     $query = $pdo->query("SELECT * FROM projetos;");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
                     $tempo_no_mes = 0;
-		  			$dias_linha = 0;
 					$dias = 0;
 		  			$tempoCargaHoraria = 0;
                     if (count($res) > 0) {
                         for ($i = 0; $i < count($res); $i++) {
                             foreach ($res[$i] as $k => $v) {
                             }
+							$dias_linha = 0;
                             $id = $res[$i]['id_project'];
                             $nome = $res[$i]['nome'];
                             $descricao = $res[$i]['descricao'];
@@ -114,10 +114,12 @@ $exit = Date("Y-m") . "-$fim";
 				<div class="d-flex flex-wrap justify-content-around">
 					<?php
 						$minutos_mes = $tempo_no_mes * 60;
+						$segundos_mes = $tempo_no_mes * 3600;
 					?>
-					<p>Horas Trabalhado no Mês: <?= $tempo_no_mes ?>hrs</p>
-					<p>Minutos Trabalhados no Mês: <?= $minutos_mes ?>min</p>
-					<p>Dias de Trabalho: <?= $dias ?> Dias</p>
+					<p>Horas (M): <?= $tempo_no_mes ?>hrs</p>
+					<p>Minutos (M): <?= number_format($minutos_mes, 2, ',', '.') ?>min</p>
+					<p>Segundos (M): <?= number_format($segundos_mes, 2, ',', '.') ?></p>
+					<p>Dias de Trabalho: <?= $dias ?></p>
 				</div>
 				
             </tfoot>
