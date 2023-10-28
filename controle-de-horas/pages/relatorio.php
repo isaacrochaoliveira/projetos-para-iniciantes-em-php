@@ -4,19 +4,19 @@ include_once('./db/conexao.php');
 
 $start = Date("Y-m") . "-01";
 $month = Date("m");
-if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
-    $fim = "31";
-} else {
-    if ($month == "02") {
-        if (Date('Y') % 4 == 0) {
-            $fim = "29";
-        } else {
-            $fim = "28";
-        }
-    } else {
-        $fim = "30";
-    }
-}
+	if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
+		$fim = "31";
+	} else {
+		if ($month == "02") {
+			if (Date('Y') % 4 == 0) {
+				$fim = "29";
+			} else {
+				$fim = "28";
+			}
+		} else {
+			$fim = "30";
+		}
+	}
 $exit = Date("Y-m") . "-$fim";
 
 ?>
@@ -90,6 +90,28 @@ $exit = Date("Y-m") . "-$fim";
 										for ($c = $date_in_array[2]; $c <= $date_out_array[2]; $c++) {
 											$dias_linha += 1;
 											$dias += 1;	
+										}
+									}
+								} else {
+									if ($date_out_array[1] > $date_in_array[1]) {
+										if ($date_in_array[2] < $date_out_array[2]) {
+											$month = $date_in_array[1];
+											if (($month == "01") || ($month == "03") || ($month == "05") || ($month == "07") || ($month == "08") || ($month == "10") || ($month == "12")) {
+												$dias_mes = "31";
+											} else {
+												if ($month == "02") {
+													if (Date('Y') % 4 == 0) {
+														$dias_mes = "29";
+													} else {
+														$dias_mes = "28";
+													}
+												} else {
+													$dias_mes = "30";
+												}
+											}
+											for ($z = $date_in_array[2]; $z <= $dias_mes; $z++) {
+												echo $z . "<br>";
+											}
 										}
 									}
 								}
